@@ -1,57 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { viVN } from '@material-ui/core/locale';
+import StyledEngineProvider from '@material-ui/core/StyledEngineProvider';
+import {
+  createMuiTheme,
+  responsiveFontSizes,
+  ThemeProvider,
+} from '@material-ui/core/styles';
+import 'assets/css/nprogress.css';
+import { useThemeMode } from 'contexts/ThemeModeContext';
+import merge from 'lodash/merge';
+import { useMemo } from 'react';
+import Routes from 'Routes';
+import 'slick-carousel/slick/slick.css';
+import 'swiper/swiper-bundle.css';
+import customTheme from './app/theme';
 
 function App() {
+  const { themeMode } = useThemeMode();
+
+  const theme = useMemo(
+    () =>
+      responsiveFontSizes(
+        createMuiTheme(
+          merge(customTheme, {
+            palette: {
+              mode: themeMode,
+            },
+          }),
+          viVN
+        )
+      ),
+    [themeMode]
+  );
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Routes />
+      </ThemeProvider>
+    </StyledEngineProvider>
   );
 }
 
